@@ -38,6 +38,10 @@
     --section-gap: 160px;
 }
 
+:root[theme="1"] {
+    --vt-c-white: #4093ff;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --color-background: var(--vt-c-black);

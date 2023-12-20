@@ -9,6 +9,6 @@ import router from './router'
 const app = createApp(App)
 
 app.use(router)
-app.use(ElementPlus, { size: 'small', zIndex: 3000, locale })
+app.use(ElementPlus, { zIndex: 3000, locale })
 
 app.mount('#app')

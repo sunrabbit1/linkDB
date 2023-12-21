@@ -1,6 +1,6 @@
 <template>
     <div class="gamelist-wrapper">
-        <div class="gamelist-item" v-for="item in gameList" :key=item.game_nImageUrl>
+        <div class="gamelist-item" v-for="item in showGameList" :key=item.game_nImageUrl>
             <el-image @click="tt(item)" :src=item.game_nImageUrl fit="fill" lazy>
                 <template #placeholder>
                     <div class="gamelist-item-loading">
@@ -8,10 +8,16 @@
                     </div>
                 </template>
             </el-image>
+            <div class="gamelist-details-warpper">
+                <div style="text-align: center;color: #fff;padding: 20px;">
+                    <h2>{{ item.game_cName }}</h2>
+                </div>
+            </div>
         </div>
     </div>
-    <el-pagination v-model:current-page="currentPage2" v-model:page-size="pageSize2" :page-sizes="[20, 50, 100, 200]"
-        layout="total, sizes, prev, pager, next" :total="gameList.length">
+    <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[20, 50, 100, 200]"
+        layout="total, sizes, prev, pager, next" :total="gameList.length" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange">
     </el-pagination>
 </template>
 
@@ -868,22 +874,59 @@ export default {
                     "game_cName": "永夜"
                 }
             ],
-            currentPage2: 1,
-            pageSize2: 20,
+            showGameList: [],
+            currentPage: 1,
+            pageSize: 20,
         }
     },
     methods: {
+        aaa() {
+            console.log(29);
+        },
+        // 滚动条回到顶部
+        backTop() {
+            this.$nextTick(() => {
+                window.scrollTo({
+                    top: 0, // 滚动到页面顶部
+                    behavior: 'smooth' // 平滑滚动
+                })
+            });
+        },
         async getProfile() {
+            // let { data, error } = await supabase.from('t_game').select('*').range((this.currentPage - 1) * this.pageSize, (this.currentPage * this.pageSize) - 1)
             let { data, error } = await supabase.from('t_game').select('*')
             this.gameList = [];
             this.gameList = data;
+            this.getShowPage();
+        },
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.handleCurrentChange(1);
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.backTop();
+            this.getShowPage(); // 查询一次，手动截取数据完成分页
+            // this.getProfile() // 直接在数据库查询
+        },
+        getShowPage() {
+            let totalPage = [];
+            let pageNum = Math.ceil(this.gameList.length / this.pageSize) || 1; // 计算有多少页数据，默认为1
+            // 循环页面
+            for (let i = 0; i < pageNum; i++) {
+                // 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+                // 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为2， 则第一页是1-2条，即slice(0,2)，第二页是3-4条，即slice(3,4)以此类推
+                totalPage[i] = this.gameList.slice(this.pageSize * i, this.pageSize * (i + 1))
+            }
+            // 获取到数据后默认显示第一页内容
+            this.showGameList = totalPage[this.currentPage - 1];
         },
         tt(value) {
             console.log(value.game_cName);
         }
     },
     mounted() {
-        // this.getProfile();
+        this.getProfile();
     }
 }
 </script>
@@ -899,11 +942,26 @@ export default {
 .gamelist-item {
     width: 245px;
     height: 340px;
-    /* background-color: #eee; */
+    border-radius: 20px;
     margin: 20px 15px;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.gamelist-item:hover {
+    box-shadow: 0 16px 32px 0px rgb(48 55 66 / 36%);
+    transform: translate(0, -10px);
+    transition-delay: 0s;
+
+    .gamelist-details-warpper {
+        left: 0;
+        top: 0;
+    }
 }
 
 .gamelist-item-loading {
@@ -912,6 +970,17 @@ export default {
     align-items: center;
     height: 100%;
     background-color: #000;
+}
+
+.gamelist-details-warpper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #00000090;
+    border-radius: 20px;
+    left: -100%;
+    top: -100%;
+    transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
 
 .el-image {

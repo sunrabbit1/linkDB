@@ -10,6 +10,7 @@ export default {
     methods: {
         handleCommand(command) {
             console.log(command);
+            // document.documentElement.setAttribute('theme', '1')
         }
     }
 }
@@ -24,7 +25,7 @@ export default {
                 </div>
                 <div class="content">
                     <nav class="navbar-menu">
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/test">游戏</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/gamelist">游戏</RouterLink>
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/about">相册</RouterLink>
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/">日志</RouterLink>
                     </nav>

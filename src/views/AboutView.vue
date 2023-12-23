@@ -19,6 +19,7 @@
     <div style="height: 50px;background-color: #e0f0e9;">素 q</div>
     <div style="height: 50px;background-color: #8fb2c9;">晴山蓝 q</div>
     <div style="height: 50px;background-color: #806d9e;">槿紫 fh</div>
+
 </template>
 
 <script>

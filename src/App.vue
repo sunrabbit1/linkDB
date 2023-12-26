@@ -35,7 +35,7 @@ export default {
         <div class="header-wrapper">
             <div class="header-container">
                 <div class="logo-container">
-                    <RouterLink to="/"><img src="./assets/logo.svg" alt="" class="logo"></RouterLink>
+                    <RouterLink to="/"><img src="./assets/mylogo.svg" alt="" class="logo"></RouterLink>
                 </div>
                 <div class="content">
                     <nav class="navbar-menu">

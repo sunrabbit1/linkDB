@@ -18,7 +18,7 @@
     border-bottom: 1px solid #dcdfe6;
     height: 55px;
     backdrop-filter: saturate(80%) blur(6px);
-    background-color: #ffffff99;
+    background: var(--vt-c-header);
     padding: 0 32px;
 }
 
@@ -90,7 +90,7 @@ img {
 
 .page-content {
     padding: 20px;
-    margin: 55px auto;
+    margin: 20px auto 55px;
     max-width: 1482px;
     min-height: calc(100vh - 165px);
 }

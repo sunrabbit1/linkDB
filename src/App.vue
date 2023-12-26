@@ -10,7 +10,21 @@ export default {
     methods: {
         handleCommand(command) {
             console.log(command);
-            // document.documentElement.setAttribute('theme', '1')
+            if (command == 'a') {
+                document.documentElement.setAttribute('theme', '');
+            }
+            if (command == 'b') {
+                document.documentElement.setAttribute('theme', '1');
+                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
+            }
+            if (command == 'c') {
+                document.documentElement.setAttribute('theme', '2');
+                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
+            }
+            if (command == 'e') {
+                document.documentElement.setAttribute('theme', '4');
+                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
+            }
         }
     }
 }
@@ -53,16 +67,28 @@ export default {
         <div class="page-content">
             <RouterView v-slot="{ Component }">
                 <template v-if="Component">
-                    <keep-alive>
-                        <component :is="Component"></component>
-                    </keep-alive>
+                    <Transition name="fade" mode="out-in" appear>
+                        <keep-alive>
+                            <component :is="Component"></component>
+                        </keep-alive>
+                    </Transition>
                 </template>
             </RouterView>
         </div>
     </main>
 </template>
 
-<style scoped></style>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s cubic-bezier(0.02, 0.01, 0.47, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
 
 
 <!-- <div style="width: 100%;height: 220px;"> -->

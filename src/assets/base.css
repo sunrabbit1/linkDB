@@ -1,6 +1,10 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-    --vt-c-white: linear-gradient(#e0c8d1, #50616d);
+    --vt-c-theme: #ccffff;
+    --vt-c-card-text: #333;
+    --vt-c-card-loadimg: #fff;
+    --vt-c-card-background: #99ccff;
+    --vt-c-header: #ffffff5c;
     --vt-c-white-soft: #f8f8f8;
     --vt-c-white-mute: #f2f2f2;
     --vt-c-white-header: #ffffff5c;
@@ -27,7 +31,7 @@
 
 /* semantic color variables for this project */
 :root {
-    --color-background: var(--vt-c-white);
+    --color-background: var(--vt-c-theme);
     --color-background-soft: var(--vt-c-white-soft);
     --color-background-mute: var(--vt-c-white-mute);
     --color-background-header: var(--vt-c-white-mute);
@@ -43,10 +47,23 @@
 
 :root[theme="1"] {
     --vt-c-theme: linear-gradient(#e0c8d1, #50616d);
-    --vt-c-header: #ffffff5c;
     --vt-c-card-background: linear-gradient(#aa9bad, #92a7b6);
     --vt-c-card-loadimg: linear-gradient(#d4cad6, #bacddb);
     --vt-c-card-text: #34357e;
+}
+
+:root[theme="2"] {
+    --vt-c-theme: #e5b8c3;
+    --vt-c-card-background: #d0deaa;
+    --vt-c-card-loadimg: #a4c798;
+    --vt-c-card-text: #333;
+}
+
+:root[theme="4"] {
+    --vt-c-theme: #806d9e;
+    --vt-c-card-background: #252a69;
+    --vt-c-card-loadimg: #a1bed0;
+    --vt-c-card-text: #ccccff;
 }
 
 @media (prefers-color-scheme: dark) {

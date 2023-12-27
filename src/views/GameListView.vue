@@ -1,33 +1,35 @@
 <template>
-    <div class="gamelist-wrapper">
-        <div class="gamelist" v-for="item in showGameList" :key="item.game_nImageUrl">
-            <div class="card">
-                <div class="imgBx">
-                    <el-image :src="item.game_nImageUrl" fit="fill" lazy>
-                        <template #placeholder>
-                            <div class="gamelist-item-loadimg">
-                                <img src="../assets/w.png" alt="" style="width: 100%;">
-                            </div>
-                        </template>
-                        <template #error>
-                            <div class="gamelist-item-loadimg">
-                                <img src="../assets/ew.png" alt="" style="width: 100%;">
-                            </div>
-                        </template>
-                    </el-image>
-                </div>
-                <div class="content">
-                    <h2>{{ item.game_cName }}</h2>
-                    <p>daefrghnj</p>
-                    <p>daefrghnj</p>
+    <div class="gamePage">
+        <div class="gamelist-wrapper">
+            <div class="gamelist" v-for="item in showGameList" :key="item.game_nImageUrl">
+                <div class="card">
+                    <div class="imgBx">
+                        <el-image :src="item.game_nImageUrl" fit="fill" lazy>
+                            <template #placeholder>
+                                <div class="gamelist-item-loadimg">
+                                    <img src="../assets/w.png" alt="" style="width: 100%;">
+                                </div>
+                            </template>
+                            <template #error>
+                                <div class="gamelist-item-loadimg">
+                                    <img src="../assets/ew.png" alt="" style="width: 100%;">
+                                </div>
+                            </template>
+                        </el-image>
+                    </div>
+                    <div class="content">
+                        <h2>{{ item.game_cName }}</h2>
+                        <p>daefrghnj</p>
+                        <p>daefrghnj</p>
+                    </div>
                 </div>
             </div>
         </div>
+        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[20, 50, 100, 200]"
+            layout="total, sizes, prev, pager, next" :total="gameList.length" @size-change="handleSizeChange" :small="false"
+            @current-change="handleCurrentChange">
+        </el-pagination>
     </div>
-    <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[20, 50, 100, 200]"
-        layout="total, sizes, prev, pager, next" :total="gameList.length" @size-change="handleSizeChange" :small="false"
-        @current-change="handleCurrentChange">
-    </el-pagination>
 </template>
 
 <script>
@@ -962,7 +964,7 @@ export default {
     align-items: flex-end;
     width: 290px;
     height: 420px;
-    background: linear-gradient(#aa9bad, #92a7b6);
+    background: var(--vt-c-card-background);
     border-radius: 20px;
     box-shadow: 0 15px 25px rgba(0, 0,0,0.25);
     transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
@@ -970,7 +972,7 @@ export default {
 
 .card:hover {
     height: 460px;
-    background-color: #e0c8d1;
+    /* background-color: #e0c8d1; */
 }
 
 .imgBx {
@@ -1010,7 +1012,7 @@ export default {
 .content h2 {
     /* font-size: 1.5em; */
     font-weight: 700;
-    color: #fff;
+    color: var(--vt-c-card-text);
     margin-bottom: 10px;
 }
 
@@ -1029,7 +1031,7 @@ export default {
     align-items: center;
     width: 100%;
     height: 100%;
-    background: linear-gradient(#d4cad6, #bacddb);
+    background: var(--vt-c-card-loadimg);
 }
 
 .el-pagination {

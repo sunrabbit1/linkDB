@@ -905,7 +905,7 @@ export default {
         },
         async getProfile() {
             // let { data, error } = await supabase.from('t_game').select('*').range((this.currentPage - 1) * this.pageSize, (this.currentPage * this.pageSize) - 1)
-            let { data, error } = await supabase.from('t_game').select('*')
+            let { data, error } = await supabase.from('t_game').select('*').order('id')
             this.gameList = [];
             this.gameList = data;
             this.getShowPage();
@@ -932,12 +932,14 @@ export default {
             // 获取到数据后默认显示第一页内容
             this.showGameList = totalPage[this.currentPage - 1];
         },
-        tt(value) {
-            console.log(value.game_cName);
+        async tt() {
+            // let { data, error } = await supabase.from('t_game').insert({game_nSort: '172', game_nImageUrl: 'test', game_cName: 'test'})
         }
     },
     mounted() {
         this.getProfile();
+        this.tt()
+
     }
 }
 </script>

@@ -42,19 +42,19 @@ export default {
             let formData = new FormData();
             formData.append("smfile", file.file);
             console.log(formData);
-            axios({
-                method: "POST",
-                url: "/smmsApi/upload",
-                data: formData,
-                headers: { "Content-Type": "multipart/form-data", "Authorization": import.meta.env.VITE_SMMS_KEY },
-            }).then(res => {
-                console.log(res.data.data.url);
-                let tmp = res.data;
-                if (tmp.code === "success") {
-                    let imgName = tmp.data.filename.replace(/[^\d]/g, "");
-                    // let { data, error } = await supabase.from('t_game').insert({game_nSort: this.gameList.length + 1, game_nImageUrl: tmp.data.url, game_cName: 'test'})
-                }
-            })
+            // axios({
+            //     method: "POST",
+            //     url: "/smmsApi/upload",
+            //     data: formData,
+            //     headers: { "Content-Type": "multipart/form-data", "Authorization": import.meta.env.VITE_SMMS_KEY },
+            // }).then(res => {
+            //     console.log(res.data.data.url);
+            //     let tmp = res.data;
+            //     if (tmp.code === "success") {
+            //         let imgName = tmp.data.filename.replace(/[^\d]/g, "");
+            //         // let { data, error } = await supabase.from('t_game').insert({game_nSort: this.gameList.length + 1, game_nImageUrl: tmp.data.url, game_cName: 'test'})
+            //     }
+            // })
         }
     },
     mounted() {

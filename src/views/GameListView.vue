@@ -42,13 +42,18 @@
                     <el-input v-model="newGameData.gameName" />
                 </el-form-item>
                 <el-form-item label="图片" prop="gameImage">
-                    <el-upload action="#" :on-change="upLoadImage" :auto-upload="false" list-type="picture-card">
+                    <el-upload
+                        action="#"
+                        ref="upLoadMyFile"
+                        :on-change="handleChange"
+                        :on-exceed="handleExceed"
+                        :on-remove="handleRemove"
+                        :auto-upload="false"
+                        :limit="1"
+                        list-type="picture-card">
                         <svg t="1703751767380" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8869" width="50" height="50">
                             <path d="M847.0528 491.52H532.48V176.9472c0-11.264-9.216-20.48-20.48-20.48s-20.48 9.216-20.48 20.48V491.52H176.9472c-11.264 0-20.48 9.216-20.48 20.48s9.216 20.48 20.48 20.48H491.52v314.5728c0 11.264 9.216 20.48 20.48 20.48s20.48-9.216 20.48-20.48V532.48h314.5728c11.264 0 20.48-9.216 20.48-20.48s-9.216-20.48-20.48-20.48z" p-id="8870"></path>
                         </svg>
-                        <template #file="{ file }">
-                            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-                        </template>
                     </el-upload>
                 </el-form-item>
                 <el-form-item>
@@ -63,9 +68,17 @@
 <script>
 import { supabase } from '../supabase';
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 export default {
     name: 'GameList',
     data() {
+        const validateFiles = (rule, value, callback) => {
+            let files = this.gameImageList;
+            if (files.length === 0) {
+                callback(new Error("你咋不传图片？"));
+            }
+            callback();
+        }
         return {
             gameList: [],
             showGameList: [],
@@ -78,9 +91,9 @@ export default {
             },
             newGameRules: {
                 gameName: [{ required: true, message: '你咋不输入名称？', tigger: 'change' }],
-                gameImage: [{ required: true, message: '你咋不上传图片？', tigger: 'change' }],
-            }
-            // isDevelopment: false,
+                gameImage: [{ required: true, validator: validateFiles, tigger: 'change' }],
+            },
+            gameImageList: []
         }
     },
     methods: {
@@ -130,17 +143,26 @@ export default {
             // 获取到数据后默认显示第一页内容
             this.showGameList = totalPage[this.currentPage - 1];
         },
-        async tt(tmp) {
+        async insertData(tmp) {
             let imgSort = tmp.data.filename.replace(/[^\d]/g, "");
-            let { data, error } = await supabase
-                .from('t_game')
-                .insert({ game_nSort: imgSort, game_nImageUrl: tmp.data.url, game_cName: "", game_cImageName: tmp.data.filename })
+            let { data, error } = await supabase.from('t_game').insert({ game_nSort: imgSort, game_nImageUrl: tmp.data.url, game_cName: this.newGameData.gameName, game_cImageName: tmp.data.filename }).select()
+
+            console.log(data);
+            // if (data.status === 201) {
+            //     ElMessage({
+            //         message: '成功',
+            //         type: 'success',
+            //     })
+            // }
         },
-        upLoadImage(file, fileList) {
+        handleChange(file, fileList) {
             let fileType = [];
             fileType.push('image/jpg', 'image/jpeg', 'image/png');
             if (fileType.indexOf(file.raw.type) < 0) {
-                // 这里提示信息
+                ElMessage({
+                    message: '类型不对',
+                    type: 'warning',
+                })
                 this.deleteFile(file, fileList);
                 return;
             }
@@ -149,44 +171,64 @@ export default {
             fileSize = file.raw.size;
             let size = fileSize / 1024;
             if (size > fileMaxSize * 10) {
-                // 不能大于10M
+                ElMessage({
+                    message: '图片不能大于10M',
+                    type: 'warning',
+                })
                 this.deleteFile(file, fileList);
                 return;
             }
             if (size <= 0) {
-                // 图片不为空
+                ElMessage({
+                    message: '图片不能为空',
+                    type: 'warning',
+                })
                 this.deleteFile(file, fileList);
                 return;
             }
-
-
             let formData = new FormData();
-            formData.append("smfile", file.file);
+            formData.append("smfile", file.raw);
             this.newGameData.gameImage = formData;
-            console.log(this.newGameData);
-            // axios({
-            //     method: "POST",
-            //     url: "/smmsApi/upload",
-            //     data: formData,
-            //     headers: { "Content-Type": "multipart/form-data", "Authorization": import.meta.env.VITE_SMMS_KEY },
-            // }).then(res => {
-            //     let tmp = res.data;
-            //     if (tmp.code === "success") {
-            //         this.tt(tmp);
-            //     }
-            // })
+            this.gameImageList.push(fileList);
         },
         deleteFile(file, fileList) {
             for (let i = 0; i < fileList.length; i++) {
                 if (file.uid === fileList[i].uid) {
                     fileList.splice(i, 1);
+                    this.gameImageList = fileListl;
                     break;
                 }
             }
         },
+        //文件个数限制
+        handleExceed(files, fileList) {
+            ElMessage({
+                message: '最大上传图片数量为1张。',
+                type: 'warning',
+            })
+        },
+        handleRemove(files, fileList) {
+            this.newGameData.gameImage = null;
+            this.gameImageList = [];
+        },
         onSubmit() {
+            let this_ = this;
             this.$refs.newGameRef.validate(valid => {
-                console.log(valid);
+                console.log(this_.newGameData.gameImage);
+
+                if (valid) {
+                    axios({
+                        method: "POST",
+                        url: "/smmsApi/upload",
+                        data: this.newGameData.gameImage,
+                        headers: { "Content-Type": "multipart/form-data", "Authorization": import.meta.env.VITE_SMMS_KEY },
+                    }).then(res => {
+                        let tmp = res.data;
+                        if (tmp.code === "success") {
+                            this.insertData(tmp);
+                        }
+                    })
+                }
             });
         },
         reSetForm() {
@@ -194,6 +236,7 @@ export default {
             this.newGameData.gameImage = null;
             this.$refs.newGameRef.clearValidate();
             this.$refs.newGameRef.resetFields();
+            this.$refs.upLoadMyFile.clearFiles();
         },
         closeDialog() {
             this.reSetForm();
@@ -202,10 +245,6 @@ export default {
     },
     mounted() {
         this.getProfile();
-        // this.tt()
-        if (import.meta.env.MODE === 'development') {
-
-        }
     }
 }
 </script>

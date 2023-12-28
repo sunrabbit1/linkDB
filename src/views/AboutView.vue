@@ -51,6 +51,7 @@ export default {
                 console.log(res.data.data.url);
                 let tmp = res.data;
                 if (tmp.code === "success") {
+                    let imgName = tmp.data.filename.replace(/[^\d]/g, "");
                     // let { data, error } = await supabase.from('t_game').insert({game_nSort: this.gameList.length + 1, game_nImageUrl: tmp.data.url, game_cName: 'test'})
                 }
             })

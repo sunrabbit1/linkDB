@@ -27,6 +27,8 @@
 
     --el-fill-color-blank: inherit !important;
     --el-text-color-regular: inherit !important;
+    /* --el-fill-color-lighter: transparent !important;
+    --el-border-color-darker: transparent !important; */
 }
 
 /* semantic color variables for this project */

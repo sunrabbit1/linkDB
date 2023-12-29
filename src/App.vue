@@ -3,8 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 export default {
     data() {
         return {
-            svgColor: "#202020",
-            activeIndex: "1"
+            activeIndex: "1",
         }
     },
     methods: {
@@ -45,16 +44,16 @@ export default {
                     </nav>
                     <div class="theme-toggler-content">
                         <el-dropdown trigger="click" @command="handleCommand">
-                            <svg width="14" height="14" viewBox="0 0 48 48" fill="none" :stroke="svgColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="14" height="14" viewBox="0 0 48 48" fill="none" stroke="#202020" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M18 6C18 9.31371 20.6863 12 24 12C27.3137 12 30 9.31371 30 6H35.4545L42 15.8182L36.2727 20.7273V42H11.7273V20.7273L6 15.8182L12.5455 6H18Z" stroke-width="4" stroke-linejoin="round" />
                             </svg>
                             <template #dropdown>
                                 <el-dropdown-menu>
-                                    <el-dropdown-item command="a">test1</el-dropdown-item>
-                                    <el-dropdown-item command="b">test2</el-dropdown-item>
-                                    <el-dropdown-item command="c">test3</el-dropdown-item>
+                                    <el-dropdown-item command="a">天空之吻</el-dropdown-item>
+                                    <el-dropdown-item command="b">梦幻蔷薇</el-dropdown-item>
+                                    <el-dropdown-item command="c">蔷薇雾霭</el-dropdown-item>
                                     <el-dropdown-item command="d">test4</el-dropdown-item>
-                                    <el-dropdown-item command="e">test5</el-dropdown-item>
+                                    <el-dropdown-item command="e">薄暮紫调</el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>

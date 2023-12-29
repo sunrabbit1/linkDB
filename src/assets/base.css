@@ -2,9 +2,14 @@
 :root {
     --vt-c-theme: #ccffff;
     --vt-c-card-text: #333;
-    --vt-c-card-loadimg: #fff;
+    --vt-c-card-loadimg: #6699cc;
     --vt-c-card-background: #99ccff;
     --vt-c-header: #ffffff5c;
+    --vt-c-timeLine: #6699cc;
+    --vt-c-timeLine-container: #ffc775;
+    --vt-c-timeCard: #99ccff;
+    --vt-c-timeCard-text: #333;
+
     --vt-c-white-soft: #f8f8f8;
     --vt-c-white-mute: #f2f2f2;
     --vt-c-white-header: #ffffff5c;
@@ -52,6 +57,10 @@
     --vt-c-card-background: linear-gradient(#aa9bad, #92a7b6);
     --vt-c-card-loadimg: linear-gradient(#d4cad6, #bacddb);
     --vt-c-card-text: #34357e;
+    --vt-c-timeLine: #d4cad6;
+    --vt-c-timeLine-container: #a65f4a;
+    --vt-c-timeCard: #ffeae4;
+    --vt-c-timeCard-text: #34357e;
 }
 
 :root[theme="2"] {
@@ -59,6 +68,10 @@
     --vt-c-card-background: #d0deaa;
     --vt-c-card-loadimg: #a4c798;
     --vt-c-card-text: #333;
+    --vt-c-timeLine: #a4c798;
+    --vt-c-timeLine-container: #b188a5;
+    --vt-c-timeCard: #d0deaa;
+    --vt-c-timeCard-text: #333;
 }
 
 :root[theme="4"] {
@@ -66,6 +79,10 @@
     --vt-c-card-background: #252a69;
     --vt-c-card-loadimg: #a1bed0;
     --vt-c-card-text: #ccccff;
+    --vt-c-timeLine: #a1bed0;
+    --vt-c-timeLine-container: #a4d7bf;
+    --vt-c-timeCard: #252a69;
+    --vt-c-timeCard-text: #ccccff;
 }
 
 @media (prefers-color-scheme: dark) {

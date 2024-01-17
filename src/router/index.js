@@ -1,5 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AboutView from '../views/AboutView.vue'
+import GameListView from '../views/GameListView.vue'
+import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -12,16 +15,19 @@ const router = createRouter({
         {
             path: '/about',
             name: 'about',
-            component: () => import('../views/AboutView.vue')
+            // component: () => import('../views/AboutView.vue')
+            component: AboutView
         },
         {
             path: '/gamelist',
             name: 'gamelist',
-            component: () => import('../views/GameListView.vue')
+            // component: () => import('../views/GameListView.vue')
+            component: GameListView
         },
         {
             path: '/:pathMatch(.*)',
-            component: () => import('../views/NotFound.vue')
+            // component: () => import('../views/NotFound.vue')
+            component: NotFound
         }
     ]
 })

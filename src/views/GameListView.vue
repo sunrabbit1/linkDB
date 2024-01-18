@@ -19,8 +19,11 @@
                     </div>
                     <div class="content">
                         <h2>{{ item.game_cName }}</h2>
-                        <p>daefrghnj</p>
-                        <p>daefrghnj</p>
+                        <div class="content-p">
+                            <p>{{ item.game_cStatus == null ? '--' : item.game_cStatus }}</p>
+                            <p>{{ item.game_cCollection == null ? '--' : item.game_cCollection }}</p>
+                            <p>{{ item.game_cRemark == null ? '--' : item.game_cRemark }}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="card" style="cursor: pointer;" v-if="item.isDevelopment" @click="dialogFormVisible = true">
@@ -145,9 +148,9 @@ export default {
         },
         async insertData(tmp) {
             let imgSort = tmp.data.filename.replace(/[^\d]/g, "");
-            let { data, error } = await supabase.from('t_game').insert({ game_nSort: imgSort, game_nImageUrl: tmp.data.url, game_cName: this.newGameData.gameName, game_cImageName: tmp.data.filename }).select()
-
-            console.log(data);
+            let { data, error } = await supabase.from('t_game')
+                                .insert({ game_nSort: imgSort, game_nImageUrl: tmp.data.url, game_cName: this.newGameData.gameName, game_cImageName: tmp.data.filename })
+                                .select()
             // if (data.status === 201) {
             //     ElMessage({
             //         message: '成功',
@@ -212,10 +215,7 @@ export default {
             this.gameImageList = [];
         },
         onSubmit() {
-            let this_ = this;
             this.$refs.newGameRef.validate(valid => {
-                console.log(this_.newGameData.gameImage);
-
                 if (valid) {
                     axios({
                         method: "POST",
@@ -261,7 +261,7 @@ export default {
 .gamelist {
     display: flex;
     align-items: center;
-    height: 460px;
+    height: 445px;
 }
 
 .card {
@@ -269,8 +269,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 290px;
-    height: 420px;
+    width: 275px;
+    height: 410px;
     background: var(--vt-c-card-background);
     border-radius: 20px;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
@@ -301,7 +301,7 @@ export default {
 
 .content {
     position: absolute;
-    top: 374px;
+    top: 370px;
     width: 100%;
     padding: 0 10px;
     height: 30px;
@@ -323,8 +323,16 @@ export default {
     margin-bottom: 10px;
 }
 
-.content p {
-    color: #333;
+.content-p p{
+    color: var(--vt-c-card-text);
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.content-p p:first-child{
+    margin-top: 20px;
+
 }
 
 .el-image {
@@ -344,4 +352,5 @@ export default {
 .el-pagination {
     padding-top: 20px;
     justify-content: center;
-}</style>
+}
+</style>

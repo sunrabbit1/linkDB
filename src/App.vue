@@ -3,12 +3,11 @@ import { RouterLink, RouterView } from 'vue-router'
 export default {
     data() {
         return {
-            activeIndex: "1",
+            input1: "1",
         }
     },
     methods: {
         handleCommand(command) {
-            console.log(command);
             if (command == 'a') {
                 document.documentElement.setAttribute('theme', '');
             }
@@ -20,11 +19,20 @@ export default {
                 document.documentElement.setAttribute('theme', '2');
                 // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
+            if (command == 'd') {
+                document.documentElement.setAttribute('theme', '3');
+                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
+            }
             if (command == 'e') {
                 document.documentElement.setAttribute('theme', '4');
                 // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
+            localStorage.setItem("command", command);
         }
+    },
+    created() {
+        let command = localStorage.getItem("command");
+        this.handleCommand(command);
     }
 }
 </script>
@@ -38,12 +46,12 @@ export default {
                 </div>
                 <div class="content">
                     <nav class="navbar-menu">
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/gamelist">游戏</RouterLink>
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/about">相册</RouterLink>
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/">日志</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/">游戏墙</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/about">相册墙</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">日志</RouterLink>
                     </nav>
                     <div class="theme-toggler-content">
-                        <el-dropdown trigger="click" @command="handleCommand">
+                        <el-dropdown trigger="hover" @command="handleCommand">
                             <svg width="14" height="14" viewBox="0 0 48 48" fill="none" stroke="#202020" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M18 6C18 9.31371 20.6863 12 24 12C27.3137 12 30 9.31371 30 6H35.4545L42 15.8182L36.2727 20.7273V42H11.7273V20.7273L6 15.8182L12.5455 6H18Z" stroke-width="4" stroke-linejoin="round" />
                             </svg>
@@ -52,7 +60,7 @@ export default {
                                     <el-dropdown-item command="a">天空之吻</el-dropdown-item>
                                     <el-dropdown-item command="b">梦幻蔷薇</el-dropdown-item>
                                     <el-dropdown-item command="c">蔷薇雾霭</el-dropdown-item>
-                                    <el-dropdown-item command="d">test4</el-dropdown-item>
+                                    <el-dropdown-item command="d">素梦幽情</el-dropdown-item>
                                     <el-dropdown-item command="e">薄暮紫调</el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>

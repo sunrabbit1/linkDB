@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import GameListView from '../views/GameListView.vue'
+import GameWallView from '../views/GameWallView.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
@@ -9,8 +10,8 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: HomeView
+            name: 'gamelist',
+            component: GameListView
         },
         {
             path: '/about',
@@ -19,10 +20,16 @@ const router = createRouter({
             component: AboutView
         },
         {
-            path: '/gamelist',
-            name: 'gamelist',
+            path: '/home',
+            name: 'home',
             // component: () => import('../views/GameListView.vue')
-            component: GameListView
+            component: HomeView
+        },
+        {
+            path: '/gamewall',
+            name: 'gamewall',
+            // component: () => import('../views/GameListView.vue')
+            component: GameWallView
         },
         {
             path: '/:pathMatch(.*)',

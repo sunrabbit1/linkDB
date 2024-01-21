@@ -303,7 +303,7 @@ export default {
     position: absolute;
     top: 370px;
     width: 100%;
-    padding: 0 10px;
+    padding: 0 20px;
     height: 30px;
     overflow: hidden;
     text-align: center;

@@ -61,6 +61,7 @@
 
     --el-fill-color-blank: inherit !important;
     --el-text-color-regular: inherit !important;
+    --el-fill-color-light: #f5f7fa70 !important;
     /* --el-fill-color-lighter: transparent !important;
     --el-border-color-darker: transparent !important; */
 }

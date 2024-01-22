@@ -74,6 +74,12 @@ import axios from 'axios';
 import { ElMessage } from 'element-plus';
 export default {
     name: 'GameList',
+    props: {
+        searchValue: {
+            type: String,
+            default: ""
+        }
+    },
     data() {
         const validateFiles = (rule, value, callback) => {
             let files = this.gameImageList;
@@ -99,6 +105,11 @@ export default {
             gameImageList: []
         }
     },
+    watch: {
+        searchValue(val) {
+            console.log(val);
+        }
+    },
     methods: {
         // 滚动条回到顶部
         backTop() {
@@ -111,7 +122,7 @@ export default {
         },
         async getProfile() {
             // let { data, error } = await supabase.from('t_game').select('*').range((this.currentPage - 1) * this.pageSize, (this.currentPage * this.pageSize) - 1)
-            let { data, error } = await supabase.from('t_game').select('*').order('game_nSort')
+            let { data, error } = await supabase.from('t_game').select('*').order('game_cName')
             this.gameList = [];
             this.gameList = data;
             for (let i = 0; i < this.gameList.length; i++) {
@@ -317,7 +328,7 @@ export default {
 }
 
 .content h2 {
-    /* font-size: 1.5em; */
+    font-size: 1.3em;
     font-weight: 700;
     color: var(--vt-c-card-text);
     margin-bottom: 10px;

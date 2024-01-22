@@ -3,10 +3,11 @@ import { RouterLink, RouterView } from 'vue-router'
 export default {
     data() {
         return {
-            input1: "1",
+            searchValue: ""
         }
     },
     methods: {
+        // 主题切换
         handleCommand(command) {
             if (command == 'a') {
                 document.documentElement.setAttribute('theme', '');
@@ -28,6 +29,10 @@ export default {
                 // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
             localStorage.setItem("command", command);
+        },
+        // 查询
+        search() {
+
         }
     },
     created() {
@@ -45,10 +50,22 @@ export default {
                     <RouterLink to="/"><img src="./assets/mylogo.svg" alt="" class="logo"></RouterLink>
                 </div>
                 <div class="content">
+                    <div v-if="$route.path.includes('/gamelist')">
+                        <el-input v-model="searchValue" placeholder="你想查什么？" style="width: 220px;margin-right: 10px;">
+                            <template #append>
+                                <el-button @click="search">
+                                    <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21 38C30.3888 38 38 30.3888 38 21C38 11.6112 30.3888 4 21 4C11.6112 4 4 11.6112 4 21C4 30.3888 11.6112 38 21 38Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/><path d="M26.657 14.3431C25.2093 12.8954 23.2093 12 21.0001 12C18.791 12 16.791 12.8954 15.3433 14.3431" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.2216 33.2217L41.7069 41.707" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </el-button>
+                            </template>
+                        </el-input>
+                    </div>
                     <nav class="navbar-menu">
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/">游戏墙</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/gamelist">游戏墙</RouterLink>
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/about">相册墙</RouterLink>
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">日志</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">游戏日志</RouterLink>
+                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">系统日志</RouterLink>
                     </nav>
                     <div class="theme-toggler-content">
                         <el-dropdown trigger="hover" @command="handleCommand">
@@ -72,7 +89,7 @@ export default {
     </header>
     <main class="main">
         <div class="page-content">
-            <RouterView v-slot="{ Component }">
+            <RouterView :searchValue="searchValue" v-slot="{ Component }">
                 <template v-if="Component">
                     <Transition name="fade" mode="out-in" appear>
                         <keep-alive>
@@ -95,6 +112,11 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
+
+.el-input__inner::placeholder {
+	color: #333333c4;
+}
+
 </style>
 
 

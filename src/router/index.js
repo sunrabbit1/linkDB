@@ -9,7 +9,11 @@ const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/',
+            path: '',
+            redirect: '/gamelist'
+        },
+        {
+            path: '/gamelist',
             name: 'gamelist',
             component: GameListView
         },

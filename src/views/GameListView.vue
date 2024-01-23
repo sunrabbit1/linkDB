@@ -44,6 +44,15 @@
                 <el-form-item label="游戏名称" prop="gameName">
                     <el-input v-model="newGameData.gameName" />
                 </el-form-item>
+                <el-form-item label="游戏状态" prop="gameStatus">
+                    <el-input v-model="newGameData.gameStatus" />
+                </el-form-item>
+                <el-form-item label="收集状况" prop="gamecollection">
+                    <el-input v-model="newGameData.gamecollection" />
+                </el-form-item>
+                <el-form-item label="游戏备注" prop="gameremark">
+                    <el-input v-model="newGameData.gameremark" />
+                </el-form-item>
                 <el-form-item label="图片" prop="gameImage">
                     <el-upload
                         action="#"
@@ -74,12 +83,6 @@ import axios from 'axios';
 import { ElMessage } from 'element-plus';
 export default {
     name: 'GameList',
-    props: {
-        searchValue: {
-            type: String,
-            default: ""
-        }
-    },
     data() {
         const validateFiles = (rule, value, callback) => {
             let files = this.gameImageList;
@@ -96,18 +99,17 @@ export default {
             dialogFormVisible: false,
             newGameData: {
                 gameName: "",
+                gameStatus: null,
+                gamecollection: null,
+                gameremark: null,
                 gameImage: null
             },
             newGameRules: {
                 gameName: [{ required: true, message: '你咋不输入名称？', tigger: 'change' }],
+                gameStatus: [{ required: true, message: '你咋不输入状态？', tigger: 'change' }],
                 gameImage: [{ required: true, validator: validateFiles, tigger: 'change' }],
             },
             gameImageList: []
-        }
-    },
-    watch: {
-        searchValue(val) {
-            console.log(val);
         }
     },
     methods: {
@@ -121,7 +123,7 @@ export default {
             });
         },
         async getProfile() {
-            // let { data, error } = await supabase.from('t_game').select('*').range((this.currentPage - 1) * this.pageSize, (this.currentPage * this.pageSize) - 1)
+            // let { data, error } = await supabase.from('t_game').select('*').range((this.currentPage - 1) * this.pageSize, (this.currentPage * this.pageSize) - 1).order('game_cName')
             let { data, error } = await supabase.from('t_game').select('*').order('game_cName')
             this.gameList = [];
             this.gameList = data;
@@ -157,17 +159,31 @@ export default {
             // 获取到数据后默认显示第一页内容
             this.showGameList = totalPage[this.currentPage - 1];
         },
+        // 新增数据
         async insertData(tmp) {
             let imgSort = tmp.data.filename.replace(/[^\d]/g, "");
             let { data, error } = await supabase.from('t_game')
-                                .insert({ game_nSort: imgSort, game_nImageUrl: tmp.data.url, game_cName: this.newGameData.gameName, game_cImageName: tmp.data.filename })
+                                .insert({
+                                    game_nSort: imgSort,
+                                    game_nImageUrl: tmp.data.url,
+                                    game_cName: this.newGameData.gameName,
+                                    game_cImageName: tmp.data.filename,
+                                    game_cStatus: this.newGameData.gameStatus,
+                                    game_cCollection: this.newGameData.gamecollection,
+                                    game_cRemark: this.newGameData.gameremark
+                                })
                                 .select()
-            // if (data.status === 201) {
-            //     ElMessage({
-            //         message: '成功',
-            //         type: 'success',
-            //     })
-            // }
+            if (data.status === 201) {
+                ElMessage({
+                    message: '成功',
+                    type: 'success',
+                })
+            } else {
+                ElMessage({
+                    message: '失败',
+                    type: 'error'
+                })
+            }
         },
         handleChange(file, fileList) {
             let fileType = [];
@@ -252,10 +268,28 @@ export default {
         closeDialog() {
             this.reSetForm();
             this.dialogFormVisible = false;
+        },
+        // 查询
+        async gameSearch(val) {
+            if (!val) {
+                val = "";
+            }
+            let { data, error } = await supabase.from('t_game').select().ilike('game_cName', '%' + val + '%').order('game_cName');
+            this.gameList = [];
+            this.gameList = data;
+            for (let i = 0; i < this.gameList.length; i++) {
+                this.gameList[i].isDevelopment = false;
+            }
+            if (import.meta.env.MODE === 'development') {
+                this.gameList.push({
+                    isDevelopment: true
+                })
+            }
+            this.getShowPage();
         }
     },
     mounted() {
-        this.getProfile();
+        this.gameSearch();
     }
 }
 </script>

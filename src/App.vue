@@ -32,7 +32,7 @@ export default {
         },
         // 查询
         search() {
-
+            this.$refs.child.gameSearch(this.searchValue); // 调用页面方法
         }
     },
     created() {
@@ -51,7 +51,7 @@ export default {
                 </div>
                 <div class="content">
                     <div v-if="$route.path.includes('/gamelist')">
-                        <el-input v-model="searchValue" placeholder="你想查什么？" style="width: 220px;margin-right: 10px;">
+                        <el-input v-model="searchValue" placeholder="你想查什么？" clearable style="width: 220px;margin-right: 10px;">
                             <template #append>
                                 <el-button @click="search">
                                     <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,7 @@ export default {
                     <nav class="navbar-menu">
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/gamelist">游戏墙</RouterLink>
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/about">相册墙</RouterLink>
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">游戏日志</RouterLink>
+                        <!-- <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">游戏日志</RouterLink> -->
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">系统日志</RouterLink>
                     </nav>
                     <div class="theme-toggler-content">
@@ -89,11 +89,11 @@ export default {
     </header>
     <main class="main">
         <div class="page-content">
-            <RouterView :searchValue="searchValue" v-slot="{ Component }">
+            <RouterView v-slot="{ Component }">
                 <template v-if="Component">
                     <Transition name="fade" mode="out-in" appear>
                         <keep-alive>
-                            <component :is="Component"></component>
+                            <component ref="child" :is="Component"></component>
                         </keep-alive>
                     </Transition>
                 </template>

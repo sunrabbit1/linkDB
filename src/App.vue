@@ -3,7 +3,12 @@ import { RouterLink, RouterView } from 'vue-router'
 export default {
     data() {
         return {
-            searchValue: ""
+            searchValue: "",
+            waitTime: 600, // 该时间间隔内点击才有效
+            lastTime: new Date().getTime(), // 上次点击时间
+            count: 0, // 点击次数
+            timer: null, // 延时器
+            showPhoto: false
         }
     },
     methods: {
@@ -14,25 +19,33 @@ export default {
             }
             if (command == 'b') {
                 document.documentElement.setAttribute('theme', '1');
-                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
             if (command == 'c') {
                 document.documentElement.setAttribute('theme', '2');
-                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
             if (command == 'd') {
                 document.documentElement.setAttribute('theme', '3');
-                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
             if (command == 'e') {
                 document.documentElement.setAttribute('theme', '4');
-                // document.documentElement.style.setProperty('--vt-c-theme', 'linear-gradient(#333, #555)')
             }
             localStorage.setItem("command", command);
         },
         // 查询
         search() {
             this.$refs.child.gameSearch(this.searchValue); // 调用页面方法
+        },
+        tt() {
+            let currentTime = new Date().getTime();
+            this.count = (currentTime - this.lastTime) < this.waitTime ? this.count + 1 : 1;
+            this.lastTime = new Date().getTime();
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                clearTimeout(this.timer);
+                if (this.count > 4) {
+                    this.showPhoto = true;
+                }
+            }, this.waitTime + 10);
         }
     },
     created() {
@@ -44,6 +57,7 @@ export default {
 
 <template>
     <header class="header">
+        <div style="position: absolute;top: 0;left: 0;width: 10px;height: 100%;z-index: 10;" @click="tt"></div>
         <div class="header-wrapper">
             <div class="header-container">
                 <div class="logo-container">
@@ -63,7 +77,7 @@ export default {
                     </div>
                     <nav class="navbar-menu">
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/gamelist">游戏墙</RouterLink>
-                        <RouterLink class="item-link link is-menu-link" active-class="active" to="/about">相册墙</RouterLink>
+                        <RouterLink v-if="showPhoto" class="item-link link is-menu-link" active-class="active" to="/about">相册墙</RouterLink>
                         <!-- <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">游戏日志</RouterLink> -->
                         <RouterLink class="item-link link is-menu-link" active-class="active" to="/home">系统日志</RouterLink>
                     </nav>
